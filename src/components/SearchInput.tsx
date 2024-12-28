@@ -9,7 +9,12 @@ const SearchInput = () => {
 
   const handleSearch = () => {
     // Update the URL with the search query parameter
-    router.push(`/?name=${search}`);
+    if (search) {
+      // Set the `name` query parameter in the URL
+      router.push(`/?name=${search}`);
+    } else {
+      router.push(`/`);
+    }
   };
 
   return (

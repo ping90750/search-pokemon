@@ -4,12 +4,20 @@ import { GET_POKEMON_LISTS, GET_POKEMON_BY_NAME } from "../graphql/queries";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
+// Define the type for Pokémon
+interface Pokemon {
+  id: string;
+  name: string;
+  image: string;
+  types: string[];
+}
+
 const Result = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
 
   const [first, setFirst] = useState(20);
-  const [pokemons, setPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Set the type here
 
   // Query to fetch Pokémon by name if a search term is provided
   const {
@@ -36,7 +44,7 @@ const Result = () => {
     if (name && dataByName) {
       const pokemon = dataByName.pokemon;
       if (pokemon) {
-        let arrPokemon = [];
+        const arrPokemon: Pokemon[] = []; // Ensure the array is of type Pokemon[]
         arrPokemon.push(pokemon);
 
         setPokemons(arrPokemon);
@@ -71,18 +79,16 @@ const Result = () => {
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "center",
-
           width: "100%",
         }}
       >
-        {pokemons.map((pokemon: any) => (
+        {pokemons.map((pokemon) => (
           <div key={pokemon.id} style={{ width: "16%", margin: 8 }}>
             <img
               src={pokemon.image}
               alt={pokemon.name}
               width={"100%"}
               height={150}
-              style={{}}
             />
             <p>Name: {pokemon.name}</p>
             <p>Types: {pokemon.types.join(", ")}</p>
